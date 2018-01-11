@@ -1,11 +1,15 @@
 package stock;
 
+import java.io.IOException;
+
 /**
  * 
  * @author Hyun
  *
  */
-public class Company {
+public class Company implements iCrawler{
+	
+	private Crawler spider;
 	
 	private String name;
 	private String code;
@@ -17,6 +21,7 @@ public class Company {
 	 * @param code
 	 */
 	public Company(String name, String code) {
+		spider = new Crawler();
 		this.name = name;
 		this.code = code;
 		this.current_price = -1;
@@ -54,9 +59,19 @@ public class Company {
 		this.current_price = price;
 	}
 	
-	public void printInfo() {
-		System.out.println("Comapny INFO: ");
-		System.out.println("Company: " + this.name + " Code#: " + this.code + '\n');
+	/**
+	 * 
+	 * @param opt
+	 * @throws IOException
+	 */
+	public void printInfo(boolean opt) throws IOException {
+		String url = spider.getUrl(code);
+		spider.readUrl(url, opt);
+	}
+	
+	@Override
+	public void update() {
+		spider.update();
 	}
 	
 }
